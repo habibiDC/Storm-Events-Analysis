@@ -1,9 +1,5 @@
----
-title: "Identification of most harmful events since 1996"
-output: 
-  html_document: 
-    keep_md: yes
----
+## "Identification of most harmful events since 1996"
+
 ## Synopsis
 
 In this report we want to identify the most harmful event to population health and economics in respect to property damage since 1996 when all types of events were recorded. Particularly, we look at events that account for the upper 25% total harmful consequences aross US regions (North Central, Northeast, South and West). North Central and South show higher total fatalities accounted for by heat, exessive heat and tornado. South shows higher total injuries accounted for by tornado and flood. Flood accounts for the most property damage, especially in the North Central region.
