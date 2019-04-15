@@ -1,4 +1,4 @@
-## "Identification of most harmful events since 1996"
+## Identification of most harmful events since 1996
 
 ## Synopsis
 
