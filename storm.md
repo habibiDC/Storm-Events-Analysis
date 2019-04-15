@@ -1,8 +1,8 @@
 ---
-title: "Identification of most harmful events since 1996"
+title: "Identification of Most Harmful Events since 1996"
 output: 
-  html_document: 
-    keep_md: yes
+   html_document: 
+     keep_md: yes
 ---
 ## Synopsis
 
@@ -127,6 +127,33 @@ library(lubridate)
 ```
 
 ```r
+library(dplyr)
+```
+
+```
+## 
+## Attaching package: 'dplyr'
+```
+
+```
+## The following objects are masked from 'package:lubridate':
+## 
+##     intersect, setdiff, union
+```
+
+```
+## The following objects are masked from 'package:stats':
+## 
+##     filter, lag
+```
+
+```
+## The following objects are masked from 'package:base':
+## 
+##     intersect, setdiff, setequal, union
+```
+
+```r
 statestorm2<-statestorm1 %>% group_by(year(BGN_DATE),region,EVTYPE)%>%summarise(sum(FATALITIES),sum(INJURIES))
 statestorm2$EVTYPE<-tolower(statestorm2$EVTYPE)
 type<-c('Astronomical Low Tide' , 'Avalanche',  'Blizzard','Coastal Flood','Cold/Wind Chill','Debris Flow','Dense Fog', 'Dense Smoke', 'Drought' ,'Dust Devil','Dust Storm', 'Excessive Heat',  'Extreme Cold/Wind Chill',  'Flash Flood',  'Flood',  'Frost/Freeze', 'Funnel Cloud',  'Freezing Fog',  'Hail', 'Heat', 'Heavy Rain',  'Heavy Snow',  'High Surf',  'High Wind', 'Hurricane (Typhoon)', 'Ice Storm', 'Lake-Effect Snow', 'Lakeshore Flood', 'Lightning', 'Marine Hail','Marine High Wind', 'Marine Strong Wind', 'Marine Thunderstorm Wind','Rip Current', 'Seiche','Sleet','Storm Surge/Tide', 'Strong Wind', 'Thunderstorm Wind', 'Tornado','Tropical Depression', 'Tropical Storm','Tsunami', 'Volcanic Ash',' Waterspout','Wildfire','Winter Storm','Winter Weather') # official event types from storm data event table
@@ -150,10 +177,6 @@ qtfatality<-quantile(fatalityregiontype$TotalFatality) # cutoff for upper 25% is
 qtinjury<-quantile(injuryregiontype$TotalInjury) # cutoff for upper 25% is 344.5
 upperfatality<-subset(fatalityregiontype, TotalFatality >= 88.5)
 upperinjury<-subset(injuryregiontype, TotalInjury >= 344.5)
-
-
-healthtype<-event %>% group_by(EVTYPE) %>% summarise(TotalFatality=sum(`sum(FATALITIES)`),TatalInjury=sum(`sum(INJURIES)`))
-healthregion<-event %>% group_by(region) %>% summarise(TotalFatality=sum(`sum(FATALITIES)`),TatalInjury=sum(`sum(INJURIES)`))
 ```
 
 
@@ -170,7 +193,7 @@ g<-ggplot(data = upperfatality,aes(x=EVTYPE,y=TotalFatality,color=factor(EVTYPE)
 g+geom_point()+facet_grid(.~region)+labs(x= 'Types of Events', y = 'Total Fatality', title = 'Upper 25% Total Fatalities accounted for by event types and regions')+theme(axis.text.x=element_blank())
 ```
 
-![](storm_files/figure-html/unnamed-chunk-6-1.png)<!-- -->
+![](storm_files/figure-html/health1-1.png)<!-- -->
 
 Now we create a similar plot to identify events that cause the most total injuries across US regions.
 
@@ -179,7 +202,7 @@ g<-ggplot(data = upperinjury,aes(x=EVTYPE,y=TotalInjury,color=factor(EVTYPE)))
 g+geom_point()+facet_grid(.~region)+labs(x= 'Types of Events', y = 'Total Injury', title = 'Upper 25% Total Injuries accounted for by event types and regions')+theme(axis.text.x=element_blank())
 ```
 
-![](storm_files/figure-html/unnamed-chunk-7-1.png)<!-- -->
+![](storm_files/figure-html/health 2-1.png)<!-- -->
 
 
 Now that we know what types of events are most harmful with respect to population health, we want to investigae the impacts on economics in respect to property damage as well. First we want to calculate the property damage in dollar amounts and aggregate that amount based on types of events.
@@ -216,5 +239,5 @@ g<-ggplot(upperproperty,aes(x=EVTYPE))
 g+geom_bar(aes(weight=TotalDamage,fill=region))+labs(x= 'Types of Events', y = 'Total Property Damage', title = 'Upper 25% Total Property Damage accounted for by event types and regions since 1996')
 ```
 
-![](storm_files/figure-html/unnamed-chunk-10-1.png)<!-- -->
+![](storm_files/figure-html/property-1.png)<!-- -->
 
